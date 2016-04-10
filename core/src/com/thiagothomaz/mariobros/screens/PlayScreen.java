@@ -70,7 +70,7 @@ public class PlayScreen implements Screen {
         this.b2dr = new Box2DDebugRenderer();
 
 
-        new B2WorldCreator(this.world, this.map);
+        new B2WorldCreator(this.world, this.map, this.hud);
 
         this.player = new Mario(this.world, this);
 
@@ -95,7 +95,7 @@ public class PlayScreen implements Screen {
         this.world.step(1 / 60f, 6, 2);
 
         this.player.update(dt);
-
+        this.hud.update(dt);
         this.gamecam.position.x = this.player.getB2body().getPosition().x;
 
         this.gamecam.update();

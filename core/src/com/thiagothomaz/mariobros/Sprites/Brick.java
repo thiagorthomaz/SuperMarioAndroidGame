@@ -5,13 +5,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Scenes.Hud;
 
 /**
  * Created by thiago on 04/04/16.
  */
 public class Brick extends InterativeTileObject {
-    public Brick(World world, TiledMap map, Rectangle bounds) {
-        super(world, map, bounds);
+    public Brick(World world, TiledMap map, Rectangle bounds, Hud hud) {
+        super(world, map, bounds, hud);
         this.fixture.setUserData(this);
         this.setCategoryFilter(MarioBros.BRICK_BIT);
     }
@@ -21,5 +22,6 @@ public class Brick extends InterativeTileObject {
         Gdx.app.log("Brick", "Collision");
         setCategoryFilter(MarioBros.DESTROYED_BIT);
         this.getCell().setTile(null);
+        this.hud.addScore(200);
     }
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Scenes.Hud;
 
 /**
  * Created by thiago on 04/04/16.
@@ -24,12 +25,14 @@ public abstract class InterativeTileObject {
     protected Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
+    protected Hud hud;
 
-    public InterativeTileObject(World world, TiledMap map, Rectangle bounds){
+    public InterativeTileObject(World world, TiledMap map, Rectangle bounds, Hud hud){
         this.world = world;
         this.map = map;
         this.tile = tile;
         this.bounds = bounds;
+        this.hud = hud;
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();

@@ -66,6 +66,21 @@ public class Hud implements Disposable {
         return stage;
     }
 
+    public void update(float dt){
+        this.timeCount += dt;
+        if (this.timeCount >= 1) {
+            this.worldTImer--;
+            this.countdownLabel.setText(String.format("%03d", this.worldTImer));
+            timeCount = 0;
+        }
+    }
+
+    public void addScore(int value) {
+        this.score += value;
+        this.scoreLabel.setText(String.format("%06d", this.score));
+
+    }
+
     @Override
     public void dispose() {
         this.stage.dispose();

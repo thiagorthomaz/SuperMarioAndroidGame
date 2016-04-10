@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Scenes.Hud;
 import com.thiagothomaz.mariobros.Sprites.Brick;
 import com.thiagothomaz.mariobros.Sprites.Coin;
 import com.thiagothomaz.mariobros.Sprites.Ground;
@@ -19,31 +20,31 @@ import com.thiagothomaz.mariobros.Sprites.Pipe;
  * Created by thiago on 04/04/16.
  */
 public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map){
+    public B2WorldCreator(World world, TiledMap map, Hud hud){
 
 
         //Create ground bodies/fixtures
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Ground(world, map, rect);
+            new Ground(world, map, rect, hud);
         }
 
         //create pipe bodies/fixture
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Pipe(world, map, rect);
+            new Pipe(world, map, rect, hud);
         }
 
         //create brick bodies/fixture
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Brick(world, map, rect);
+            new Brick(world, map, rect, hud);
         }
 
         //create coin bodies/fixture
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Coin(world, map, rect);
+            new Coin(world, map, rect, hud);
         }
     }
 
