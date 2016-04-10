@@ -1,5 +1,6 @@
 package com.thiagothomaz.mariobros.Sprites;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -26,13 +27,15 @@ public abstract class InterativeTileObject {
     protected Body body;
     protected Fixture fixture;
     protected Hud hud;
+    protected AssetManager manager;
 
-    public InterativeTileObject(World world, TiledMap map, Rectangle bounds, Hud hud){
+    public InterativeTileObject(World world, TiledMap map, Rectangle bounds, Hud hud, AssetManager manager){
         this.world = world;
         this.map = map;
         this.tile = tile;
         this.bounds = bounds;
         this.hud = hud;
+        this.manager = manager;
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();

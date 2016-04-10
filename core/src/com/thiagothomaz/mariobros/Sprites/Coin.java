@@ -1,6 +1,8 @@
 package com.thiagothomaz.mariobros.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,9 +20,9 @@ public class Coin extends InterativeTileObject {
 
     private static TiledMapTileSet tileSet;
     private final int BLANK_COIN = 28;
-    private boolean hited = false;
-    public Coin(World world, TiledMap map, Rectangle bounds, Hud hud) {
-        super(world, map, bounds, hud);
+
+    public Coin(World world, TiledMap map, Rectangle bounds, Hud hud, AssetManager manager) {
+        super(world, map, bounds, hud, manager);
         tileSet = map.getTileSets().getTileSet("tileset_gutter");
         this.fixture.setUserData(this);
         this.setCategoryFilter(MarioBros.COIN_BIT);
@@ -29,13 +31,14 @@ public class Coin extends InterativeTileObject {
     @Override
     public void onHeadHit() {
         Gdx.app.log("Coin", "Collision");
-        getCell().setTile(tileSet.getTile(BLANK_COIN));
-        if (!this.hited) {
+
+        if (getCell().getTile().getId() == BLANK_COIN) {
+            this.manager.get("audio/sounds/bump.wav", Sound.class).play();
+        } else {
+            this.manager.get("audio/sounds/coin.wav", Sound.class).play();
             this.hud.addScore(400);
         }
-
-        this.hited = true;
-
+        getCell().setTile(tileSet.getTile(BLANK_COIN));
 
     }
 }

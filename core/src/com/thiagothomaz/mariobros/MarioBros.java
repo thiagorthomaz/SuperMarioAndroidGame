@@ -3,6 +3,9 @@ package com.thiagothomaz.mariobros;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,15 +23,32 @@ public class MarioBros extends Game {
 	public static final short COIN_BIT = 8;
 	public static final short DESTROYED_BIT = 16;
 
+	public AssetManager manager;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		this.manager = new AssetManager();
+		this.manager.load("audio/music/mario_music.ogg", Music.class);
+		this.manager.load("audio/sounds/coin.wav", Sound.class);
+		this.manager.load("audio/sounds/bump.wav", Sound.class);
+		this.manager.load("audio/sounds/breakblock.wav", Sound.class);
+		this.manager.finishLoading();
+
+		setScreen(new PlayScreen(this, this.manager));
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		this.manager.dispose();
+		this.batch.dispose();
 	}
 
 	@Override
 	public void render () {
 		super.render();
+		this.manager.update();
 	}
 
 	public SpriteBatch getBatch() {
