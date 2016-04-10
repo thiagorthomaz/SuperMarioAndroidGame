@@ -17,6 +17,7 @@ public class Coin extends InterativeTileObject {
     public Coin(World world, TiledMap map, Rectangle bounds) {
         super(world, map, bounds);
         this.fixture.setUserData(this);
+        this.setCategoryFilter(MarioBros.COIN_BIT);
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.thiagothomaz.mariobros.Sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -45,6 +47,21 @@ public abstract class InterativeTileObject {
     }
 
     public abstract void onHeadHit();
+
+    public void setCategoryFilter(short filterBit){
+        Filter filter = new Filter();
+        filter.categoryBits = filterBit;
+        this.fixture.setFilterData(filter);
+
+    }
+
+    public TiledMapTileLayer.Cell getCell(){
+        TiledMapTileLayer layer = (TiledMapTileLayer) this.map.getLayers().get(1);
+        int x = (int)(this.body.getPosition().x * MarioBros.PPM / 16);
+        int y = (int)(this.body.getPosition().y * MarioBros.PPM / 16);
+        return layer.getCell(x, y);
+    }
+
 
 
 }
