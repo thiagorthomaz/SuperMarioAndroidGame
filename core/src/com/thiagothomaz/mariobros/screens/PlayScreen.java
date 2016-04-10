@@ -25,6 +25,7 @@ import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Scenes.Hud;
 import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.Tools.B2WorldCreator;
+import com.thiagothomaz.mariobros.Tools.WorldContactListener;
 
 /**
  * Created by thiago on 03/04/16.
@@ -72,6 +73,8 @@ public class PlayScreen implements Screen {
         new B2WorldCreator(this.world, this.map);
 
         this.player = new Mario(this.world, this);
+
+        this.world.setContactListener(new WorldContactListener());
 
     }
 

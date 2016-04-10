@@ -12,4 +12,9 @@ public class Pipe extends InterativeTileObject {
     public Pipe(World world, TiledMap map, Rectangle bounds) {
         super(world, map, bounds);
     }
+
+    @Override
+    public void onHeadHit() {
+
+    }
 }

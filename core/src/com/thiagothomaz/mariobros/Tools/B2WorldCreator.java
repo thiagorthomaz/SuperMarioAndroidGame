@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Sprites.Brick;
 import com.thiagothomaz.mariobros.Sprites.Coin;
 import com.thiagothomaz.mariobros.Sprites.Ground;
 import com.thiagothomaz.mariobros.Sprites.Pipe;
@@ -19,6 +20,7 @@ import com.thiagothomaz.mariobros.Sprites.Pipe;
  */
 public class B2WorldCreator {
     public B2WorldCreator(World world, TiledMap map){
+
 
         //Create ground bodies/fixtures
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
@@ -35,7 +37,7 @@ public class B2WorldCreator {
         //create brick bodies/fixture
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Coin(world, map, rect);
+            new Brick(world, map, rect);
         }
 
         //create coin bodies/fixture
