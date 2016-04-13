@@ -1,5 +1,7 @@
 package com.thiagothomaz.mariobros.Sprites;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,7 +12,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
@@ -30,11 +31,12 @@ public class Mario extends Sprite {
     private Animation marioJump;
     private float stateTimer;
     private boolean runningRight;
+    private AssetManager manager;
 
-
-    public Mario(World world, PlayScreen screen){
+    public Mario(PlayScreen screen){
         super(screen.getAtlas().findRegion("little_mario"));
-        this.world = world;
+        this.world = screen.getWorld();
+        this.manager = screen.getManager();
         defineMario();
 
         this.currentState = State.STANDING;
@@ -131,7 +133,11 @@ public class Mario extends Sprite {
         shape.setRadius(6 / MarioBros.PPM);
 
         fdef.filter.categoryBits = MarioBros.MARIO_BIT;
-        fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.COIN_BIT | MarioBros.BRICK_BIT;
+        fdef.filter.maskBits = MarioBros.GROUND_BIT |
+                MarioBros.COIN_BIT |
+                MarioBros.BRICK_BIT |
+                MarioBros.ENEMY_BIT |
+                MarioBros.OBJECT_BIT;
 
         fdef.shape = shape;
         this.b2body.createFixture(fdef);
@@ -144,7 +150,10 @@ public class Mario extends Sprite {
 
         this.b2body.createFixture(fdef).setUserData("head");
 
+    }
 
+    public void jumpSound(){
+        this.manager.get("audio/sounds/jump_small.wav", Sound.class).play();
     }
 
     public World getWorld() {

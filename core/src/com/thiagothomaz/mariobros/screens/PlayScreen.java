@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Scenes.Hud;
+import com.thiagothomaz.mariobros.Sprites.Goomba;
 import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.Tools.B2WorldCreator;
 import com.thiagothomaz.mariobros.Tools.WorldContactListener;
@@ -53,6 +54,7 @@ public class PlayScreen implements Screen {
 
     //Sprites
     private Mario player;
+    private Goomba goomba;
 
     private AssetManager manager;
     private Music music;
@@ -82,9 +84,11 @@ public class PlayScreen implements Screen {
         this.b2dr = new Box2DDebugRenderer();
 
 
-        new B2WorldCreator(this.world, this.map, this.hud, this.manager);
+        //new B2WorldCreator(this.world, this.map, this.hud, this.manager);
+        new B2WorldCreator(this);
 
-        this.player = new Mario(this.world, this);
+        this.player = new Mario(this);
+        this.goomba = new Goomba(this, .32f, .32f);
 
         this.world.setContactListener(new WorldContactListener());
 
@@ -107,6 +111,8 @@ public class PlayScreen implements Screen {
         this.world.step(1 / 60f, 6, 2);
 
         this.player.update(dt);
+        this.goomba.update(dt);
+
         this.hud.update(dt);
         this.gamecam.position.x = this.player.getB2body().getPosition().x;
 
@@ -119,6 +125,7 @@ public class PlayScreen implements Screen {
 
 
         if (this.getDirection() == 1) {
+            this.player.jumpSound();
             this.player.getB2body().applyLinearImpulse(new Vector2(0, 4f), player.getB2body().getWorldCenter(), true);
         }
 
@@ -193,6 +200,7 @@ public class PlayScreen implements Screen {
         this.game.getBatch().setProjectionMatrix(this.gamecam.combined);
         this.game.getBatch().begin();
         this.player.draw(this.game.getBatch());
+        this.goomba.draw(this.game.getBatch());
         this.game.getBatch().end();
 
         //
@@ -204,6 +212,22 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
+    }
+
+    public TiledMap getMap(){
+        return this.map;
+    }
+
+    public World getWorld(){
+        return this.world;
+    }
+
+    public Hud getHud(){
+        return this.hud;
+    }
+
+    public AssetManager getManager(){
+        return this.manager;
     }
 
     @Override

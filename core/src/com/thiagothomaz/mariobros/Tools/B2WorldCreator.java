@@ -16,36 +16,41 @@ import com.thiagothomaz.mariobros.Sprites.Brick;
 import com.thiagothomaz.mariobros.Sprites.Coin;
 import com.thiagothomaz.mariobros.Sprites.Ground;
 import com.thiagothomaz.mariobros.Sprites.Pipe;
+import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
  * Created by thiago on 04/04/16.
  */
 public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map, Hud hud, AssetManager manager){
 
+    public B2WorldCreator(PlayScreen screen){
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
+        Hud hud = screen.getHud();
+        AssetManager manager = screen.getManager();
 
         //Create ground bodies/fixtures
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Ground(world, map, rect, hud, manager);
+            new Ground(screen, rect);
         }
 
         //create pipe bodies/fixture
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Pipe(world, map, rect, hud, manager);
+            new Pipe(screen, rect);
         }
 
         //create brick bodies/fixture
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Brick(world, map, rect, hud, manager);
+            new Brick(screen, rect);
         }
 
         //create coin bodies/fixture
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Coin(world, map, rect, hud, manager);
+            new Coin(screen, rect);
         }
     }
 

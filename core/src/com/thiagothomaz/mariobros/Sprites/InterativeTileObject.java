@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Scenes.Hud;
+import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
  * Created by thiago on 04/04/16.
@@ -29,13 +30,13 @@ public abstract class InterativeTileObject {
     protected Hud hud;
     protected AssetManager manager;
 
-    public InterativeTileObject(World world, TiledMap map, Rectangle bounds, Hud hud, AssetManager manager){
-        this.world = world;
-        this.map = map;
-        this.tile = tile;
+    //public InterativeTileObject(World world, TiledMap map, Rectangle bounds, Hud hud, AssetManager manager){
+    public InterativeTileObject(PlayScreen screen, Rectangle bounds){
+        this.world = screen.getWorld();
+        this.map = screen.getMap();
         this.bounds = bounds;
-        this.hud = hud;
-        this.manager = manager;
+        this.hud = screen.getHud();
+        this.manager = screen.getManager();
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();

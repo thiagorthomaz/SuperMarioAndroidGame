@@ -17,11 +17,13 @@ public class MarioBros extends Game {
 	public static final int V_HEIGHT = 208;
 	public static final float PPM = 100;//Pixel per meter.
 
-	public static final short DEFAULT_BIT = 1;
+	public static final short GROUND_BIT = 1;
 	public static final short MARIO_BIT = 2;
 	public static final short BRICK_BIT = 4;
 	public static final short COIN_BIT = 8;
 	public static final short DESTROYED_BIT = 16;
+    public static final short OBJECT_BIT = 32;
+    public static final short ENEMY_BIT = 64;
 
 	public AssetManager manager;
 
@@ -33,6 +35,7 @@ public class MarioBros extends Game {
 		this.manager.load("audio/sounds/coin.wav", Sound.class);
 		this.manager.load("audio/sounds/bump.wav", Sound.class);
 		this.manager.load("audio/sounds/breakblock.wav", Sound.class);
+		this.manager.load("audio/sounds/jump_small.wav", Sound.class);
 		this.manager.finishLoading();
 
 		setScreen(new PlayScreen(this, this.manager));
