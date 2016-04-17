@@ -32,25 +32,27 @@ public class B2WorldCreator {
         //Create ground bodies/fixtures
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Ground(screen, rect);
+            new Ground(screen, object);
         }
 
         //create pipe bodies/fixture
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Pipe(screen, rect);
+            new Pipe(screen, object);
         }
 
         //create brick bodies/fixture
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Brick(screen, rect);
+            new Brick(screen, object);
         }
 
         //create coin bodies/fixture
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Coin(screen, rect);
+            new Coin(screen, object);
+
+
         }
 
         this.goombas = new Array<Goomba>();

@@ -1,5 +1,6 @@
 package com.thiagothomaz.mariobros.Sprites.TileObjects;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -12,11 +13,10 @@ import com.thiagothomaz.mariobros.screens.PlayScreen;
  */
 public class Pipe extends com.thiagothomaz.mariobros.Sprites.TileObjects.InterativeTileObject {
 
-    public Pipe(PlayScreen screen, Rectangle bounds) {
-        super(screen, bounds);
+    public Pipe(PlayScreen screen, MapObject object) {
+        super(screen, object);
         this.world = screen.getWorld();
         this.map = screen.getMap();
-        this.bounds = bounds;
         this.hud = screen.getHud();
         this.manager = screen.getManager();
 

@@ -1,6 +1,8 @@
 package com.thiagothomaz.mariobros.Sprites.TileObjects;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Scenes.Hud;
+import com.thiagothomaz.mariobros.Tools.B2WorldCreator;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
@@ -30,13 +33,14 @@ public abstract class InterativeTileObject {
     protected Hud hud;
     protected AssetManager manager;
     protected PlayScreen screen;
+    protected MapObject object;
 
-    //public InterativeTileObject(World world, TiledMap map, Rectangle bounds, Hud hud, AssetManager manager){
-    public InterativeTileObject(PlayScreen screen, Rectangle bounds){
+    public InterativeTileObject(PlayScreen screen, MapObject object){
+        this.object = object;
         this.screen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
-        this.bounds = bounds;
+        this.bounds = ((RectangleMapObject) object).getRectangle();
         this.hud = screen.getHud();
         this.manager = screen.getManager();
 
