@@ -1,4 +1,4 @@
-package com.thiagothomaz.mariobros.Sprites;
+package com.thiagothomaz.mariobros.Sprites.TileObjects;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;

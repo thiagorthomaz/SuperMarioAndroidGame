@@ -1,20 +1,16 @@
-package com.thiagothomaz.mariobros.Sprites;
+package com.thiagothomaz.mariobros.Sprites.TileObjects;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
-import com.thiagothomaz.mariobros.Scenes.Hud;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
  * Created by thiago on 04/04/16.
  */
-public class Pipe extends InterativeTileObject {
+public class Pipe extends com.thiagothomaz.mariobros.Sprites.TileObjects.InterativeTileObject {
 
     public Pipe(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);

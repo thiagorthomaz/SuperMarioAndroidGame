@@ -9,11 +9,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Scenes.Hud;
-import com.thiagothomaz.mariobros.Sprites.Brick;
-import com.thiagothomaz.mariobros.Sprites.Coin;
-import com.thiagothomaz.mariobros.Sprites.Goomba;
-import com.thiagothomaz.mariobros.Sprites.Ground;
-import com.thiagothomaz.mariobros.Sprites.Pipe;
+import com.thiagothomaz.mariobros.Sprites.TileObjects.Brick;
+import com.thiagothomaz.mariobros.Sprites.TileObjects.Coin;
+import com.thiagothomaz.mariobros.Sprites.Enemies.Goomba;
+import com.thiagothomaz.mariobros.Sprites.TileObjects.Ground;
+import com.thiagothomaz.mariobros.Sprites.TileObjects.Pipe;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**

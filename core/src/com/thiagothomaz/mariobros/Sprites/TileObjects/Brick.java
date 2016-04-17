@@ -1,13 +1,9 @@
-package com.thiagothomaz.mariobros.Sprites;
+package com.thiagothomaz.mariobros.Sprites.TileObjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
-import com.thiagothomaz.mariobros.Scenes.Hud;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
