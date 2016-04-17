@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Sprites.Items.ItemDef;
+import com.thiagothomaz.mariobros.Sprites.Items.Mushroom;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
@@ -31,8 +34,10 @@ public class Coin extends InterativeTileObject {
         } else {
             this.manager.get("audio/sounds/coin.wav", Sound.class).play();
             this.hud.addScore(400);
+            this.screen.spawnItem(new ItemDef(new Vector2(this.body.getPosition().x, this.body.getPosition().y + 16 / MarioBros.PPM), Mushroom.class));
+            getCell().setTile(tileSet.getTile(BLANK_COIN));
         }
-        getCell().setTile(tileSet.getTile(BLANK_COIN));
+
 
     }
 }

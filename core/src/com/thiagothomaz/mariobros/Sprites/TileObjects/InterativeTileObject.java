@@ -29,9 +29,11 @@ public abstract class InterativeTileObject {
     protected Fixture fixture;
     protected Hud hud;
     protected AssetManager manager;
+    protected PlayScreen screen;
 
     //public InterativeTileObject(World world, TiledMap map, Rectangle bounds, Hud hud, AssetManager manager){
     public InterativeTileObject(PlayScreen screen, Rectangle bounds){
+        this.screen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
         this.bounds = bounds;
