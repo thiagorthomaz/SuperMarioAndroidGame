@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Scenes.Hud;
+import com.thiagothomaz.mariobros.Sprites.Enemy;
 import com.thiagothomaz.mariobros.Sprites.Goomba;
 import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.Tools.B2WorldCreator;
@@ -51,10 +52,10 @@ public class PlayScreen implements Screen {
     //Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator creator;
 
     //Sprites
     private Mario player;
-    private Goomba goomba;
 
     private AssetManager manager;
     private Music music;
@@ -85,10 +86,10 @@ public class PlayScreen implements Screen {
 
 
         //new B2WorldCreator(this.world, this.map, this.hud, this.manager);
-        new B2WorldCreator(this);
+        this.creator = new B2WorldCreator(this);
 
         this.player = new Mario(this);
-        this.goomba = new Goomba(this, 5.64f, .16f);
+
 
         this.world.setContactListener(new WorldContactListener());
 
@@ -111,7 +112,16 @@ public class PlayScreen implements Screen {
         this.world.step(1 / 60f, 6, 2);
 
         this.player.update(dt);
-        this.goomba.update(dt);
+
+        for (Enemy enemy : creator.getGoombas()){
+            enemy.update(dt);
+            /**
+             * 224 = pixels size (16) * amount of blocks until the end of the screen + 2 more after the screen.
+             */
+            if (enemy.getX() < this.player.getX() + 224 / MarioBros.PPM){
+                enemy.getB2body().setActive(true);
+            }
+        }
 
         this.hud.update(dt);
         this.gamecam.position.x = this.player.getB2body().getPosition().x;
@@ -200,7 +210,10 @@ public class PlayScreen implements Screen {
         this.game.getBatch().setProjectionMatrix(this.gamecam.combined);
         this.game.getBatch().begin();
         this.player.draw(this.game.getBatch());
-        this.goomba.draw(this.game.getBatch());
+        for (Enemy enemy : creator.getGoombas()){
+            enemy.draw(this.game.getBatch());
+        }
+
         this.game.getBatch().end();
 
         //

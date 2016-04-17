@@ -22,10 +22,12 @@ public abstract class Enemy extends Sprite {
         this.setPosition(x, y);
         defineEnemy();
         this.velocity = new Vector2(1, 0);
+        this.b2body.setActive(false);
 
     }
 
     protected abstract void defineEnemy();
+    public abstract void update(float dt);
     public abstract void hitOnHead();
 
     public Body getB2body(){
