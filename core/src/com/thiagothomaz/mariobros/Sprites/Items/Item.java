@@ -33,6 +33,7 @@ public abstract class Item extends Sprite {
     }
 
     public abstract void defineItem();
+
     public abstract void use(Mario mario);
 
     public void update(float dt){

@@ -22,7 +22,7 @@ import com.thiagothomaz.mariobros.screens.PlayScreen;
 /**
  * Created by thiago on 04/04/16.
  */
-public abstract class InterativeTileObject {
+public abstract class InteractiveTileObject {
 
     protected World world;
     protected TiledMap map;
@@ -35,7 +35,7 @@ public abstract class InterativeTileObject {
     protected PlayScreen screen;
     protected MapObject object;
 
-    public InterativeTileObject(PlayScreen screen, MapObject object){
+    public InteractiveTileObject(PlayScreen screen, MapObject object){
         this.object = object;
         this.screen = screen;
         this.world = screen.getWorld();

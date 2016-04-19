@@ -21,23 +21,30 @@ import com.thiagothomaz.mariobros.screens.PlayScreen;
  */
 public class Mario extends Sprite {
 
-    public enum State { FALLING, JUMPING, STANDING, RUNNING }
+    public enum State { FALLING, JUMPING, STANDING, RUNNING, GROWING }
     private State currentState;
     private State previousState;
     private World world;
     private Body b2body;
     private TextureRegion marioStand;
     private Animation marioRun;
-    private Animation marioJump;
+    private TextureRegion marioJump;
     private float stateTimer;
     private boolean runningRight;
     private AssetManager manager;
 
+    private TextureRegion bigMarioStand;
+    private TextureRegion bigMarioJump;
+    private Animation bigMarioRun;
+    private Animation growMario;
+
+    private boolean marioIsBig;
+    private boolean runGrowAnimation;
+
     public Mario(PlayScreen screen){
-        super(screen.getAtlas().findRegion("little_mario"));
+
         this.world = screen.getWorld();
         this.manager = screen.getManager();
-        defineMario();
 
         this.currentState = State.STANDING;
         this.previousState = State.STANDING;
@@ -46,19 +53,34 @@ public class Mario extends Sprite {
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 1; i < 4; i++){
-            frames.add(new TextureRegion(getTexture(), i*16, 0,16,16));
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"), i*16, 0,16,16));
         }
-        marioRun = new Animation(0.1f, frames);
+        this.marioRun = new Animation(0.1f, frames);
         frames.clear();
 
-        for (int i = 4; i< 6;i++){
-            frames.add(new TextureRegion(getTexture(), i*16, 0,16,16));
+        for (int i = 1; i < 4; i++){
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), i*16, 0,16,32));
         }
+        this.bigMarioRun = new Animation(0.1f, frames);
 
-        marioJump = new Animation(0.1f, frames);
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 240, 0, 16, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 240, 0, 16, 32));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32));
+
+        this.growMario = new Animation(0.2f, frames);
+
+
+        this.marioJump = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 80,0,16,16);
+        this.bigMarioJump = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 80,0,16,32);
+
         frames.clear();
 
-        this.marioStand = new TextureRegion(getTexture(), 0,0,16,16);
+        this.marioStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 0,0,16,16);
+        this.bigMarioStand = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0,0,16,32);
+
+        defineMario();
+
         setBounds(0,0,16 / MarioBros.PPM, 16 / MarioBros.PPM);
         setRegion(this.marioStand);
     }
@@ -73,16 +95,36 @@ public class Mario extends Sprite {
         currentState = getState();
         TextureRegion region;
         switch (currentState) {
+            case GROWING:
+                region = growMario.getKeyFrame(stateTimer);
+                if (growMario.isAnimationFinished(stateTimer)){
+                    runGrowAnimation = false;
+                }
+                break;
             case JUMPING:
-                region = marioJump.getKeyFrame(stateTimer);
+                if (this.marioIsBig){
+                    region = this.bigMarioJump;
+                } else {
+                    region = this.marioJump;
+                }
+
                 break;
             case RUNNING:
-                region = marioRun.getKeyFrame(stateTimer, true);
+                if (this.marioIsBig){
+                    region = bigMarioRun.getKeyFrame(stateTimer, true);
+                }else {
+                    region = marioRun.getKeyFrame(stateTimer, true);
+                }
                 break;
             case FALLING:
             case STANDING:
                 default:
-                    region = marioStand;
+                    if (this.marioIsBig) {
+                        region = this.bigMarioStand;
+                    }else {
+                        region = this.marioStand;
+                    }
+
                     break;
         }
 
@@ -110,7 +152,10 @@ public class Mario extends Sprite {
     }
 
     private State getState() {
-        if (this.b2body.getLinearVelocity().y > 0 || (this.b2body.getLinearVelocity().y < 0 && this.previousState == State.JUMPING)){
+
+        if (this.runGrowAnimation){
+            return State.GROWING;
+        } else if (this.b2body.getLinearVelocity().y > 0 || (this.b2body.getLinearVelocity().y < 0 && this.previousState == State.JUMPING)){
             return State.JUMPING;
         }else if (this.b2body.getLinearVelocity().y < 0){
             return State.FALLING;
@@ -142,13 +187,12 @@ public class Mario extends Sprite {
                 MarioBros.ITEM_BIT;
 
         fdef.shape = shape;
-        this.b2body.createFixture(fdef);
+        this.b2body.createFixture(fdef).setUserData(this);
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
         fdef.shape = head;
         fdef.isSensor = true;
-
 
         this.b2body.createFixture(fdef).setUserData("head");
 
@@ -164,5 +208,13 @@ public class Mario extends Sprite {
 
     public Body getB2body() {
         return b2body;
+    }
+
+    public void grow(){
+        this.runGrowAnimation = true;
+        this.marioIsBig = true;
+        setBounds(getX(), getY(), getWidth(), getHeight() * 2);
+        this.manager.get("audio/sounds/powerup.wav", Sound.class).play();
+
     }
 }

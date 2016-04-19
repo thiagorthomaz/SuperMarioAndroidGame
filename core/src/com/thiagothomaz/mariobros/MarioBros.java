@@ -39,6 +39,8 @@ public class MarioBros extends Game {
 		this.manager.load("audio/sounds/breakblock.wav", Sound.class);
 		this.manager.load("audio/sounds/jump_small.wav", Sound.class);
 		this.manager.load("audio/sounds/powerup_spawn.wav", Sound.class);
+		this.manager.load("audio/sounds/powerup.wav", Sound.class);
+
 		this.manager.finishLoading();
 
 		setScreen(new PlayScreen(this, this.manager));

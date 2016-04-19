@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Sprites.Items.ItemDef;
@@ -14,7 +13,7 @@ import com.thiagothomaz.mariobros.screens.PlayScreen;
 /**
  * Created by thiago on 04/04/16.
  */
-public class Coin extends InterativeTileObject {
+public class Coin extends InteractiveTileObject {
 
     private static TiledMapTileSet tileSet;
     private final int BLANK_COIN = 28;
