@@ -81,7 +81,7 @@ public class Mario extends Sprite {
         this.marioStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 0,0,16,16);
         this.bigMarioStand = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0,0,16,32);
 
-        defineMario();
+        defineLittleMario();
 
         setBounds(0,0,16 / MarioBros.PPM, 16 / MarioBros.PPM);
         setRegion(this.marioStand);
@@ -193,30 +193,7 @@ public class Mario extends Sprite {
 
         this.b2body = this.world.createBody(bdef);
 
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(6 / MarioBros.PPM);
-
-        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
-        fdef.filter.maskBits = MarioBros.GROUND_BIT |
-                MarioBros.COIN_BIT |
-                MarioBros.BRICK_BIT |
-                MarioBros.ENEMY_BIT |
-                MarioBros.OBJECT_BIT |
-                MarioBros.ENEMY_HEAD_BIT |
-                MarioBros.ITEM_BIT;
-
-        fdef.shape = shape;
-        this.b2body.createFixture(fdef).setUserData(this);
-
-        EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
-        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
-
-        fdef.shape = head;
-        fdef.isSensor = true;
-
-        this.b2body.createFixture(fdef).setUserData(this);
+        defineMario();
 
         timeToRedefineDefineBigMario = false;
     }
@@ -260,13 +237,18 @@ public class Mario extends Sprite {
         this.timeToDefineBigMario = false;
     }
 
-    public void defineMario(){
+    public void defineLittleMario(){
         BodyDef bdef = new BodyDef();
         bdef.position.set(32 / MarioBros.PPM, 32 / MarioBros.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
 
         this.b2body = this.world.createBody(bdef);
 
+        defineMario();
+
+    }
+
+    private void defineMario(){
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
@@ -291,8 +273,8 @@ public class Mario extends Sprite {
         fdef.isSensor = true;
 
         this.b2body.createFixture(fdef).setUserData(this);
-
     }
+
 
     public void hit(){
         if (this.isBig()){
