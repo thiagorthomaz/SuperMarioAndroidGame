@@ -41,6 +41,7 @@ public class Mario extends Sprite {
     private boolean marioIsBig;
     private boolean runGrowAnimation;
     private boolean timeToDefineBigMario;
+    private boolean timeToRedefineDefineBigMario;
 
     public Mario(PlayScreen screen){
 
@@ -97,6 +98,10 @@ public class Mario extends Sprite {
 
         if (this.timeToDefineBigMario){
             defineBigMario();
+        }
+
+        if (this.timeToRedefineDefineBigMario){
+            redefineMario();
         }
     }
 
@@ -177,6 +182,45 @@ public class Mario extends Sprite {
 
     }
 
+    public void redefineMario(){
+
+        Vector2 currentPosition = this.b2body.getPosition();
+        this.world.destroyBody(this.b2body);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(currentPosition);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+
+        this.b2body = this.world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(6 / MarioBros.PPM);
+
+        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
+        fdef.filter.maskBits = MarioBros.GROUND_BIT |
+                MarioBros.COIN_BIT |
+                MarioBros.BRICK_BIT |
+                MarioBros.ENEMY_BIT |
+                MarioBros.OBJECT_BIT |
+                MarioBros.ENEMY_HEAD_BIT |
+                MarioBros.ITEM_BIT;
+
+        fdef.shape = shape;
+        this.b2body.createFixture(fdef).setUserData(this);
+
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
+        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
+
+        fdef.shape = head;
+        fdef.isSensor = true;
+
+        this.b2body.createFixture(fdef).setUserData(this);
+
+        timeToRedefineDefineBigMario = false;
+    }
+
     public void defineBigMario(){
 
         Vector2 currentPosition = this.b2body.getPosition();
@@ -250,6 +294,17 @@ public class Mario extends Sprite {
 
     }
 
+    public void hit(){
+        if (this.isBig()){
+            this.marioIsBig = false;
+            timeToRedefineDefineBigMario = true;
+            setBounds(getX(), getY(), getWidth(), getHeight() /2);
+            this.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
+        }else {
+            this.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
+        }
+    }
+
     public void jumpSound(){
         this.manager.get("audio/sounds/jump_small.wav", Sound.class).play();
     }
@@ -268,7 +323,6 @@ public class Mario extends Sprite {
         this.timeToDefineBigMario = true;
         setBounds(getX(), getY(), getWidth(), getHeight() * 2);
         this.manager.get("audio/sounds/powerup.wav", Sound.class).play();
-
     }
 
     public boolean isBig() {
