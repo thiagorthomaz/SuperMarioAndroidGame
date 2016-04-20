@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
@@ -17,11 +18,17 @@ public class Brick extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit() {
-        Gdx.app.log("Brick", "Collision");
-        setCategoryFilter(MarioBros.DESTROYED_BIT);
-        this.getCell().setTile(null);
-        this.hud.addScore(200);
-        this.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
+    public void onHeadHit(Mario mario) {
+
+        if (mario.isBig()) {
+            Gdx.app.log("Brick", "Collision");
+            setCategoryFilter(MarioBros.DESTROYED_BIT);
+            this.getCell().setTile(null);
+            this.hud.addScore(200);
+            this.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
+        } else {
+            this.manager.get("audio/sounds/bump.wav", Sound.class).play();
+        }
+
     }
 }

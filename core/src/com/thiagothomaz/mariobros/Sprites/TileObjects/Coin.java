@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.thiagothomaz.mariobros.MarioBros;
 import com.thiagothomaz.mariobros.Sprites.Items.ItemDef;
 import com.thiagothomaz.mariobros.Sprites.Items.Mushroom;
+import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
@@ -26,7 +27,7 @@ public class Coin extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit() {
+    public void onHeadHit(Mario mario) {
         Gdx.app.log("Coin", "Collision");
 
         if (getCell().getTile().getId() == BLANK_COIN) {

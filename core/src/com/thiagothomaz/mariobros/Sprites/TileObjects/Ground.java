@@ -1,6 +1,7 @@
 package com.thiagothomaz.mariobros.Sprites.TileObjects;
 
 import com.badlogic.gdx.maps.MapObject;
+import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
@@ -12,7 +13,7 @@ public class Ground extends InteractiveTileObject {
     }
 
     @Override
-    public void onHeadHit() {
+    public void onHeadHit(Mario mario) {
 
     }
 }
