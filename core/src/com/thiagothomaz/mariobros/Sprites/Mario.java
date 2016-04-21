@@ -293,6 +293,15 @@ public class Mario extends Sprite {
     }
 
 
+    public boolean isDead(){
+        return this.marioIsDead;
+    }
+
+    public float getStateTimer(){
+        return this.stateTimer;
+    }
+
+
     public void hit(){
         if (this.isBig()){
             this.marioIsBig = false;
