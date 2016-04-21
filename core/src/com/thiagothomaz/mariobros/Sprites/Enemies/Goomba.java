@@ -60,44 +60,6 @@ public class Goomba extends Enemy {
 
     }
 
-    @Override
-    protected void defineEnemy() {
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(getX(), getY());
-        bdef.type = BodyDef.BodyType.DynamicBody;
-
-        this.b2body = this.world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(6 / MarioBros.PPM);
-
-        fdef.filter.categoryBits = MarioBros.ENEMY_BIT;
-        fdef.filter.maskBits = MarioBros.GROUND_BIT |
-                MarioBros.COIN_BIT |
-                MarioBros.BRICK_BIT |
-                MarioBros.ENEMY_BIT |
-                MarioBros.OBJECT_BIT |
-                MarioBros.MARIO_BIT;
-
-        fdef.shape = shape;
-        this.b2body.createFixture(fdef).setUserData(this);
-
-        PolygonShape head = new PolygonShape();
-        Vector2[] vertice = new Vector2[4];
-        vertice[0] = new Vector2(-5, 8).scl(1 / MarioBros.PPM);
-        vertice[1] = new Vector2(5, 8).scl(1 / MarioBros.PPM);
-        vertice[2] = new Vector2(-3, 3).scl(1 / MarioBros.PPM);
-        vertice[3] = new Vector2(-3, 3).scl(1 / MarioBros.PPM);
-
-        head.set(vertice);
-
-        fdef.shape = head;
-        fdef.restitution = 0.5f;
-        fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
-        b2body.createFixture(fdef).setUserData(this);
-
-    }
 
     public void draw(Batch batch){
         if (!this.destroyed || this.stateTime < 1){

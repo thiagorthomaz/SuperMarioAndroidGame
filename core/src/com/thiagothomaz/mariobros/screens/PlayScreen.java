@@ -142,7 +142,7 @@ public class PlayScreen implements Screen {
 
         this.player.update(dt);
 
-        for (Enemy enemy : creator.getGoombas()){
+        for (Enemy enemy : creator.getEnemies()){
             enemy.update(dt);
             /**
              * 224 = pixels size (16) * amount of blocks until the end of the screen + 2 more after the screen.
@@ -246,7 +246,7 @@ public class PlayScreen implements Screen {
         this.game.getBatch().setProjectionMatrix(this.gamecam.combined);
         this.game.getBatch().begin();
         this.player.draw(this.game.getBatch());
-        for (Enemy enemy : creator.getGoombas()){
+        for (Enemy enemy : creator.getEnemies()){
             enemy.draw(this.game.getBatch());
         }
 
