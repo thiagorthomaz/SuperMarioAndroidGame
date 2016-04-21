@@ -2,10 +2,13 @@ package com.thiagothomaz.mariobros.Sprites.Enemies;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
@@ -19,7 +22,7 @@ import com.thiagothomaz.mariobros.screens.PlayScreen;
 public class Turtle extends Enemy {
 
 
-    public enum State {WALKING, STANDING_SHELL, MOVING_SHELL};
+    public enum State {WALKING, STANDING_SHELL, MOVING_SHELL, DEAD};
     private State currentState;
     private State previousState;
     private float stateTime;
@@ -31,6 +34,8 @@ public class Turtle extends Enemy {
     private TextureRegion shell;
     private int kick_left_speed = -2;
     private int kick_right_speed = 2;
+    private float deadRotationDegrees;
+
 
 
     public Turtle(PlayScreen screen, float x, float y) {
@@ -44,6 +49,7 @@ public class Turtle extends Enemy {
         this.walkAnimation = new Animation(0.2f, this.frames);
 
         this.currentState = this.previousState = State.WALKING;
+        this.deadRotationDegrees = 0;
 
         setBounds(getX(), getY(), 16 / MarioBros.PPM, 24 / MarioBros.PPM);
 
@@ -68,7 +74,17 @@ public class Turtle extends Enemy {
         }
 
         setPosition(this.b2body.getPosition().x - getWidth() / 2, this.b2body.getPosition().y - 8 / MarioBros.PPM);
-        this.b2body.setLinearVelocity(this.velocity);
+
+        if (this.currentState == State.DEAD) {
+            this.deadRotationDegrees += 3;
+            rotate(this.deadRotationDegrees);
+            if (this.stateTime > 5){
+                this.world.destroyBody(this.b2body);
+                this.destroyed = true;
+            }
+        } else {
+            this.b2body.setLinearVelocity(this.velocity);
+        }
     }
 
     private TextureRegion getFrame(float dt){
@@ -118,6 +134,23 @@ public class Turtle extends Enemy {
         }
     }
 
+    @Override
+    public void onEnemyHit(Enemy enemy) {
+        if (enemy instanceof Turtle){
+            if (((Turtle) enemy).currentState == State.MOVING_SHELL && currentState != State.MOVING_SHELL) {
+                killed();
+            } else if (currentState == State.MOVING_SHELL && ((Turtle) enemy).currentState == State.WALKING ){
+                return;
+            } else {
+                reverseVelocity(true, false);
+            }
+
+
+        }else if (this.currentState != State.MOVING_SHELL){
+            reverseVelocity(true, false);
+        }
+    }
+
     public void kick(int speed){
         this.velocity.x = speed;
         this.currentState = State.MOVING_SHELL;
@@ -134,6 +167,25 @@ public class Turtle extends Enemy {
 
     public int getKick_right_speed(){
         return this.kick_right_speed;
+    }
+
+    public void killed(){
+        this.currentState = State.DEAD;
+        Filter filter = new Filter();
+        filter.maskBits = MarioBros.NOTHING_BIT;
+
+        for(Fixture fixture : this.b2body.getFixtureList()){
+            fixture.setFilterData(filter);
+        }
+
+        this.b2body.applyLinearImpulse(new Vector2(0, 5f), this.b2body.getWorldCenter(), true);
+
+    }
+
+    public void draw(Batch batch){
+        if (!this.destroyed){
+            super.draw(batch);
+        }
     }
 
 }

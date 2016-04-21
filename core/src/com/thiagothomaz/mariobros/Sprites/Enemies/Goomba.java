@@ -79,4 +79,14 @@ public class Goomba extends Enemy {
         setToDestroy = true;
         this.manager.get("audio/sounds/stomp.wav", Sound.class).play();
     }
+
+    @Override
+    public void onEnemyHit(Enemy enemy) {
+        if (enemy instanceof Turtle && ((Turtle) enemy).getCurrentState() == Turtle.State.MOVING_SHELL){
+            setToDestroy = true;
+            this.manager.get("audio/sounds/stomp.wav", Sound.class).play();
+        } else {
+          reverseVelocity(true, false);
+        }
+    }
 }

@@ -73,6 +73,7 @@ public abstract class Enemy extends Sprite {
 
     public abstract void update(float dt);
     public abstract void hitOnHead(Mario mario);
+    public abstract void onEnemyHit(Enemy enemy);
 
     public Body getB2body(){
         return this.b2body;
