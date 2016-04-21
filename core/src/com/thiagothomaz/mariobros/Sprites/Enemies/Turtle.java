@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
@@ -18,7 +19,7 @@ import com.thiagothomaz.mariobros.screens.PlayScreen;
 public class Turtle extends Enemy {
 
 
-    private enum State {WALKING, SHELL};
+    public enum State {WALKING, STANDING_SHELL, MOVING_SHELL};
     private State currentState;
     private State previousState;
     private float stateTime;
@@ -28,9 +29,14 @@ public class Turtle extends Enemy {
     private boolean destroyed;
     private AssetManager manager;
     private TextureRegion shell;
+    private int kick_left_speed = -2;
+    private int kick_right_speed = 2;
+
 
     public Turtle(PlayScreen screen, float x, float y) {
+
         super(screen, x, y);
+
         this.frames = new Array<TextureRegion>();
         this.frames.add(new TextureRegion(screen.getAtlas().findRegion("turtle"), 0,0, 16, 24));
         this.frames.add(new TextureRegion(screen.getAtlas().findRegion("turtle"), 16,0, 16, 24));
@@ -43,11 +49,20 @@ public class Turtle extends Enemy {
 
     }
 
+    @Override
+    protected float getRestitution() {
+        if (this.currentState == State.MOVING_SHELL){
+            return 1.8f;
+        } else {
+            return 0.5f;
+        }
+    }
+
 
     @Override
     public void update(float dt) {
         setRegion(getFrame(dt));
-        if (this.currentState == State.SHELL && this.stateTime > 5){
+        if (this.currentState == State.STANDING_SHELL && this.stateTime > 5){
             this.currentState = State.WALKING;
             this.velocity.x = 1;
         }
@@ -60,7 +75,8 @@ public class Turtle extends Enemy {
         TextureRegion region;
 
         switch (this.currentState){
-            case SHELL:
+            case MOVING_SHELL:
+            case STANDING_SHELL:
                 region = this.shell;
                 break;
             case WALKING:
@@ -88,12 +104,36 @@ public class Turtle extends Enemy {
     }
 
     @Override
-    public void hitOnHead() {
-        if (this.currentState != State.SHELL){
-            currentState = State.SHELL;
+    public void hitOnHead(Mario mario) {
+        if (this.currentState != State.STANDING_SHELL){
+            currentState = State.STANDING_SHELL;
             this.velocity.x = 0;
+        } else {
+            if (mario.getX() <= this.getX()){
+                kick(this.kick_right_speed);
+            }else {
+                kick(kick_left_speed);
+            }
 
         }
+    }
+
+    public void kick(int speed){
+        this.velocity.x = speed;
+        this.currentState = State.MOVING_SHELL;
 
     }
+
+    public State getCurrentState(){
+        return this.currentState;
+    }
+
+    public int getKick_left_speed(){
+        return this.kick_left_speed;
+    }
+
+    public int getKick_right_speed(){
+        return this.kick_right_speed;
+    }
+
 }

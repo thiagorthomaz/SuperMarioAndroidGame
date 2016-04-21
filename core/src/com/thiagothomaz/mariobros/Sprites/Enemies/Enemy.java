@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thiagothomaz.mariobros.MarioBros;
+import com.thiagothomaz.mariobros.Sprites.Mario;
 import com.thiagothomaz.mariobros.screens.PlayScreen;
 
 /**
@@ -25,13 +26,15 @@ public abstract class Enemy extends Sprite {
         this.world = screen.getWorld();
         this.screen = screen;
         this.setPosition(x, y);
-        defineEnemy();
+        defineEnemy(this.getRestitution());
         this.velocity = new Vector2(1, 0);
         this.b2body.setActive(false);
 
     }
 
-    protected void defineEnemy() {
+    protected abstract float getRestitution();
+
+    protected void defineEnemy(float restitution) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -63,13 +66,13 @@ public abstract class Enemy extends Sprite {
         head.set(vertice);
 
         fdef.shape = head;
-        fdef.restitution = 0.5f;
+        fdef.restitution = restitution;
         fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
 
     public abstract void update(float dt);
-    public abstract void hitOnHead();
+    public abstract void hitOnHead(Mario mario);
 
     public Body getB2body(){
         return this.b2body;
