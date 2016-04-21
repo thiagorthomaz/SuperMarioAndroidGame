@@ -151,7 +151,9 @@ public class PlayScreen implements Screen {
         }
 
         this.hud.update(dt);
-        this.gamecam.position.x = this.player.getB2body().getPosition().x;
+        if (this.player.getCurrentState() != Mario.State.DEAD) {
+            this.gamecam.position.x = this.player.getB2body().getPosition().x;
+        }
 
         this.gamecam.update();
         this.renderer.setView(this.gamecam);
@@ -160,20 +162,21 @@ public class PlayScreen implements Screen {
 
     private void handleInput(float dt) {
 
+        if (this.player.getCurrentState() != Mario.State.DEAD) {
 
-        if (this.getDirection() == 1) {
-            this.player.jumpSound();
-            this.player.getB2body().applyLinearImpulse(new Vector2(0, 4f), player.getB2body().getWorldCenter(), true);
+            if (this.getDirection() == 1) {
+                this.player.jumpSound();
+                this.player.getB2body().applyLinearImpulse(new Vector2(0, 4f), player.getB2body().getWorldCenter(), true);
+            }
+
+            if (this.getDirection() == 3) {
+                this.player.getB2body().applyLinearImpulse(new Vector2(0.1f, 0), player.getB2body().getWorldCenter(), true);
+            }
+
+            if (this.getDirection() == 4) {
+                this.player.getB2body().applyLinearImpulse(new Vector2(-0.1f, 0), player.getB2body().getWorldCenter(), true);
+            }
         }
-
-        if (this.getDirection() == 3) {
-            this.player.getB2body().applyLinearImpulse(new Vector2(0.1f, 0), player.getB2body().getWorldCenter(), true);
-        }
-
-        if (this.getDirection() == 4) {
-            this.player.getB2body().applyLinearImpulse(new Vector2(-0.1f, 0), player.getB2body().getWorldCenter(), true);
-        }
-
     }
 
     /**
