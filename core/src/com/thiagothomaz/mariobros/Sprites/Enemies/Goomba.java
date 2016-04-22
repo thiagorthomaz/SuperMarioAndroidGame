@@ -24,7 +24,6 @@ public class Goomba extends Enemy {
     private Animation walkAnimation;
     private Array<TextureRegion> frames;
     private boolean setToDestroy;
-    private boolean destroyed;
     private AssetManager manager;
 
     public Goomba(PlayScreen screen, float x, float y) {

@@ -21,6 +21,7 @@ public abstract class Enemy extends Sprite {
     protected PlayScreen screen;
     protected Body b2body;
     protected Vector2 velocity;
+    protected boolean destroyed;
 
     public Enemy(PlayScreen screen, float x, float y){
         this.world = screen.getWorld();
@@ -86,6 +87,10 @@ public abstract class Enemy extends Sprite {
         if (x){
             this.velocity.y = -this.velocity.y;
         }
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
 }

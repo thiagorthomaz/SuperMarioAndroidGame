@@ -72,6 +72,15 @@ public class B2WorldCreator {
 
     }
 
+    public void removeEnemy(Enemy enemy){
+        if (enemy instanceof Goomba) {
+            this.goombas.removeValue(((Goomba) enemy), true);
+        }
+        if (enemy instanceof Turtle) {
+            this.turtles.removeValue(((Turtle) enemy), true);
+        }
+    }
+
     public Array<Enemy> getEnemies(){
         Array<Enemy> enemies = new Array<Enemy>();
         enemies.addAll(this.goombas);

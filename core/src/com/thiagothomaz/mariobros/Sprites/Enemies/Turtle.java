@@ -29,7 +29,6 @@ public class Turtle extends Enemy {
     private Animation walkAnimation;
     private Array<TextureRegion> frames;
     private boolean setToDestroy;
-    private boolean destroyed;
     private AssetManager manager;
     private TextureRegion shell;
     private int kick_left_speed = -2;

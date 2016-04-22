@@ -142,6 +142,12 @@ public class PlayScreen implements Screen {
 
         this.player.update(dt);
 
+        for (Enemy enemy : creator.getEnemies()) {
+            if (enemy.isDestroyed()) {
+                this.creator.removeEnemy(enemy);
+            }
+        }
+
         for (Enemy enemy : creator.getEnemies()){
             enemy.update(dt);
             /**

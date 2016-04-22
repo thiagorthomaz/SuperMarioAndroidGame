@@ -1,5 +1,6 @@
 package com.thiagothomaz.mariobros.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -116,6 +117,11 @@ public class Mario extends Sprite {
         if (this.timeToRedefineDefineBigMario){
             redefineMario();
         }
+
+        if (!this.isOnScreen()){
+            this.marioIsDead = true;
+        }
+
     }
 
     private TextureRegion getFrame(float dt) {
@@ -350,14 +356,29 @@ public class Mario extends Sprite {
     }
 
     public void grow(){
-        this.runGrowAnimation = true;
-        this.marioIsBig = true;
-        this.timeToDefineBigMario = true;
-        setBounds(getX(), getY(), getWidth(), getHeight() * 2);
-        this.manager.get("audio/sounds/powerup.wav", Sound.class).play();
+        if (!this.isBig()) {
+            this.runGrowAnimation = true;
+            this.marioIsBig = true;
+            this.timeToDefineBigMario = true;
+            setBounds(getX(), getY(), getWidth(), getHeight() * 2);
+            this.manager.get("audio/sounds/powerup.wav", Sound.class).play();
+        }
+
     }
 
     public boolean isBig() {
         return marioIsBig;
+    }
+
+    private boolean isOnScreen(){
+        if ((getX() > 0 && getX() < MarioBros.V_WIDTH) &&
+        (getY() > 0 && getY() < MarioBros.V_HEIGHT)){
+            Gdx.app.log("Out on screen", "Mario");
+            return true;
+        } else {
+            Gdx.app.log("Out of screen", "Mario");
+            return false;
+        }
+
     }
 }
