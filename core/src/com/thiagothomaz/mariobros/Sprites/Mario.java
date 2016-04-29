@@ -55,6 +55,7 @@ public class Mario extends Sprite {
     private boolean timeToDefineBigMario;
     private boolean timeToRedefineDefineBigMario;
     private boolean marioIsDead;
+    private boolean marioJumping;
 
     public Mario(PlayScreen screen){
 
@@ -65,6 +66,7 @@ public class Mario extends Sprite {
         this.previousState = State.STANDING;
         this.stateTimer = 0;
         this.runningRight = true;
+        this.marioJumping = false;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 1; i < 4; i++){
@@ -128,7 +130,8 @@ public class Mario extends Sprite {
 
         this.currentState = getState();
         TextureRegion region;
-
+        this.marioJumping = false;
+        
         switch (currentState) {
             case DEAD:
                 region = this.marioDead;
@@ -140,11 +143,13 @@ public class Mario extends Sprite {
                 }
                 break;
             case JUMPING:
+
                 if (this.marioIsBig){
                     region = this.bigMarioJump;
                 } else {
                     region = this.marioJump;
                 }
+                this.marioJumping = true;
 
                 break;
             case RUNNING:
@@ -373,12 +378,17 @@ public class Mario extends Sprite {
     private boolean isOnScreen(){
         if ((getX() > 0 && getX() < MarioBros.V_WIDTH) &&
         (getY() > 0 && getY() < MarioBros.V_HEIGHT)){
-            Gdx.app.log("Out on screen", "Mario");
+            //Gdx.app.log("Out on screen", "Mario");
             return true;
         } else {
-            Gdx.app.log("Out of screen", "Mario");
+            //Gdx.app.log("Out of screen", "Mario");
             return false;
         }
 
     }
+
+    public boolean isJumping() {
+        return marioJumping;
+    }
+
 }

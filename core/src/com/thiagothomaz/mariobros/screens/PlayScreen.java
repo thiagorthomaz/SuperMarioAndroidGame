@@ -177,8 +177,11 @@ public class PlayScreen implements Screen {
         if (this.player.getCurrentState() != Mario.State.DEAD) {
 
             if (this.getDirection() == 1) {
-                this.player.jumpSound();
-                this.player.getB2body().applyLinearImpulse(new Vector2(0, 4f), player.getB2body().getWorldCenter(), true);
+                if (!this.player.isJumping()) {
+                    this.player.jumpSound();
+                    this.player.getB2body().applyLinearImpulse(new Vector2(0, 4f), player.getB2body().getWorldCenter(), true);
+                }
+
             }
 
             if (this.getDirection() == 3) {
